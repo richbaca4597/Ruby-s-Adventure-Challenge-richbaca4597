@@ -17,7 +17,10 @@ public class EnemyController : MonoBehaviour
     int direction = 1;
 
     Animator animator;
-     
+
+    private RubyController rubyController;
+    
+    public int score;
     
     
     // Start is called before the first frame update
@@ -26,6 +29,18 @@ public class EnemyController : MonoBehaviour
         rigidbody2D = GetComponent<Rigidbody2D>();
         timer = changeTime;
         animator = GetComponent<Animator>();
+        GameObject rubyControllerObject = GameObject.FindWithTag("RubyController");
+
+        if (rubyControllerObject != null)
+        {
+            rubyController = rubyControllerObject.GetComponent<RubyController>();
+            print ("Found the RubyController Script!");
+
+        }
+        if (rubyController == null)
+        {
+            print ("Cannot find GameController Script!");
+        }
     }
 
     void Update()
@@ -69,6 +84,8 @@ public class EnemyController : MonoBehaviour
     }
     void OnCollisionEnter2D(Collision2D other)
 {
+    
+
     RubyController player = other.gameObject.GetComponent<RubyController>();
 
     
@@ -78,7 +95,12 @@ public class EnemyController : MonoBehaviour
         player.ChangeHealth(-1);
         
     }
+
+ 
+
 }
+
+
 
 public void Fix()
 {
@@ -86,7 +108,13 @@ public void Fix()
     rigidbody2D.simulated = false;
     animator.SetTrigger("Fixed");
     smokeEffect.Stop();
+
+    
+    
+        rubyController.ChangeScore(1);
+    
 }
+
 
     
 }
